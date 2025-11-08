@@ -1,0 +1,34 @@
+/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Round 1/50
+/home/zzwtx/fl/fedex-lora/train_eval.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+  0%|                                                                                                           | 0/23 [00:00<?, ?it/s]/home/zzwtx/fl/fedex-lora/train_eval.py:63: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:08<00:00,  2.76it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.91it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.91it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.94it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.95it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.94it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 121, in <module>
+    model = federated_learning(task)
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 109, in federated_learning
+    global_model = aggregate_models_ours(global_model, client_models, args)
+  File "/home/zzwtx/fl/fedex-lora/fed_agg.py", line 88, in aggregate_models_ours
+    [client_model[lora_A_keys].detach() for client_model in client_models]
+  File "/home/zzwtx/fl/fedex-lora/fed_agg.py", line 88, in <listcomp>
+    [client_model[lora_A_keys].detach() for client_model in client_models]
+TypeError: 'PeftModelForSequenceClassification' object is not subscriptable

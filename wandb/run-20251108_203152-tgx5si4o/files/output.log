@@ -1,0 +1,70 @@
+Downloading readme: 35.3kB [00:00, 706kB/s]
+Downloading data: 100%|██████████████████████████████████████████████████████████████████████████████| 251k/251k [00:01<00:00, 190kB/s]
+Downloading data: 100%|███████████████████████████████████████████████████████████████████████████| 37.6k/37.6k [00:00<00:00, 60.1kB/s]
+Downloading data: 100%|███████████████████████████████████████████████████████████████████████████| 37.7k/37.7k [00:00<00:00, 61.9kB/s]
+Generating train split: 100%|███████████████████████████████████████████████████████████| 8551/8551 [00:00<00:00, 368508.86 examples/s]
+Generating validation split: 100%|██████████████████████████████████████████████████████| 1043/1043 [00:00<00:00, 652544.61 examples/s]
+Generating test split: 100%|████████████████████████████████████████████████████████████| 1063/1063 [00:00<00:00, 676973.15 examples/s]
+tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 135kB/s]
+vocab.json: 100%|███████████████████████████████████████████████████████████████████████████████████| 899k/899k [00:00<00:00, 3.10MB/s]
+merges.txt: 100%|███████████████████████████████████████████████████████████████████████████████████| 456k/456k [00:00<00:00, 12.5MB/s]
+tokenizer.json: 100%|█████████████████████████████████████████████████████████████████████████████| 1.36M/1.36M [00:00<00:00, 9.30MB/s]
+config.json: 100%|████████████████████████████████████████████████████████████████████████████████████| 481/481 [00:00<00:00, 3.20MB/s]
+/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Map: 100%|███████████████████████████████████████████████████████████████████████████████| 8551/8551 [00:00<00:00, 11777.60 examples/s]
+Map: 100%|████████████████████████████████████████████████████████████████████████████████| 1043/1043 [00:00<00:00, 9417.73 examples/s]
+Map: 100%|███████████████████████████████████████████████████████████████████████████████| 1063/1063 [00:00<00:00, 10086.96 examples/s]
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/utils/_http.py", line 402, in hf_raise_for_status
+    response.raise_for_status()
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/requests/models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://huggingface.co/roberta_base/resolve/main/config.json
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/utils/hub.py", line 402, in cached_file
+    resolved_file = hf_hub_download(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1007, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1114, in _hf_hub_download_to_cache_dir
+    _raise_on_head_call_error(head_call_error, force_download, local_files_only)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1655, in _raise_on_head_call_error
+    raise head_call_error
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1543, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1460, in get_hf_file_metadata
+    r = _request_wrapper(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 283, in _request_wrapper
+    response = _request_wrapper(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 307, in _request_wrapper
+    hf_raise_for_status(response)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/huggingface_hub/utils/_http.py", line 452, in hf_raise_for_status
+    raise _format(RepositoryNotFoundError, message, response) from e
+huggingface_hub.errors.RepositoryNotFoundError: 404 Client Error. (Request ID: Root=1-690f384e-381315c1454c54c436d24fa6;9ce79a62-98c7-44f9-a4f9-93c0ac419655)
+
+Repository Not Found for url: https://huggingface.co/roberta_base/resolve/main/config.json.
+Please make sure you specified the correct `repo_id` and `repo_type`.
+If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 121, in <module>
+    model = federated_learning(task)
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 81, in federated_learning
+    global_model = create_peft_model(num_labels, args)
+  File "/home/zzwtx/fl/fedex-lora/models.py", line 28, in create_peft_model
+    model = RobertaForSequenceClassification.from_pretrained(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3247, in from_pretrained
+    resolved_config_file = cached_file(
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/utils/hub.py", line 425, in cached_file
+    raise EnvironmentError(
+OSError: roberta_base is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `huggingface-cli login` or by passing `token=<your_token>`

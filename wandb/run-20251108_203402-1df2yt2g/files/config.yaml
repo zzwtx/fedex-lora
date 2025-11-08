@@ -1,0 +1,105 @@
+_wandb:
+    value:
+        cli_version: 0.22.3
+        e:
+            vim07g9hnnj9gscglllqi26ywd4u5vp9:
+                args:
+                    - --model=roberta-base
+                    - --task=cola
+                    - --agg_type=ours
+                    - --num_clients=3
+                    - --lora_r=4
+                    - --rounds
+                    - "50"
+                    - --lr
+                    - "1e-3"
+                    - --local_epochs
+                    - "3"
+                codePath: fed_train_glue.py
+                codePathLocal: fed_train_glue.py
+                cpu_count: 8
+                cpu_count_logical: 16
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "1081101176832"
+                        used: "102011600896"
+                email: zzwtx1@gmail.com
+                executable: /home/zzwtx/fl/fedex-lora/.venv/bin/python3
+                git:
+                    commit: 2fa2e4a243f93c829e2b601e459e45aa748e4149
+                    remote: git@github.com:CERT-Lab/fedex-lora.git
+                gpu: NVIDIA GeForce RTX 5060 Ti
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Blackwell
+                      memoryTotal: "17103323136"
+                      name: NVIDIA GeForce RTX 5060 Ti
+                      uuid: GPU-d1933768-e761-511f-950b-22eefbcddf12
+                host: DESKTOP-TPQCNFJ
+                memory:
+                    total: "16710299648"
+                os: Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+                program: /home/zzwtx/fl/fedex-lora/fed_train_glue.py
+                python: CPython 3.10.19
+                root: /home/zzwtx/fl/fedex-lora
+                startedAt: "2025-11-08T12:34:02.997355Z"
+                writerId: vim07g9hnnj9gscglllqi26ywd4u5vp9
+        m: []
+        python_version: 3.10.19
+        t:
+            "1":
+                - 1
+                - 5
+                - 11
+                - 49
+                - 51
+                - 53
+                - 71
+                - 98
+            "2":
+                - 1
+                - 5
+                - 11
+                - 49
+                - 51
+                - 53
+                - 71
+                - 98
+            "3":
+                - 16
+            "4": 3.10.19
+            "5": 0.22.3
+            "6": 4.44.2
+            "12": 0.22.3
+            "13": linux-x86_64
+agg_type:
+    value: ours
+batch_size:
+    value: 128
+local_epochs:
+    value: 3
+lora_alpha:
+    value: 8
+lora_dropout:
+    value: 0.1
+lora_r:
+    value: 4
+lr:
+    value: 0.001
+max_seq_length:
+    value: 512
+model:
+    value: roberta-base
+num_clients:
+    value: 3
+rounds:
+    value: 50
+rslora:
+    value: false
+seed:
+    value: 42
+task:
+    value: cola
+warmup_ratio:
+    value: 0.06

@@ -23,12 +23,12 @@ def aggregate_models_normal(global_model, client_models):
     for k in global_dict.keys():
         if "lora" in k:  # Only aggregate LoRA parameters
             global_dict[k] = torch.stack(
-                [client_models[i][k].float() for i in range(len(client_models))], 0
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
             ).mean(0)
 
         if "classifier" in k:
             global_dict[k] = torch.stack(
-                [client_models[i][k].float() for i in range(len(client_models))], 0
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
             ).mean(0)
 
     global_model.load_state_dict(global_dict)
@@ -42,12 +42,12 @@ def aggregate_models_ffa(global_model, client_models):
     for k in global_dict.keys():
         if "lora_B" in k:  # Only aggregate LoRA B parameters
             global_dict[k] = torch.stack(
-                [client_models[i][k].float() for i in range(len(client_models))], 0
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
             ).mean(0)
 
         if "classifier" in k:
             global_dict[k] = torch.stack(
-                [client_models[i][k].float() for i in range(len(client_models))], 0
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
             ).mean(0)
 
     global_model.load_state_dict(global_dict)
@@ -66,7 +66,7 @@ def aggregate_models_ours(global_model, client_models, args):
 
         if "classifier" in k:
             global_dict[k] = torch.stack(
-                [client_models[i][k].float() for i in range(len(client_models))], 0
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
             ).mean(0)
 
     for client_model in client_models:
@@ -74,7 +74,7 @@ def aggregate_models_ours(global_model, client_models, args):
         for k in global_dict.keys():
 
             if "classifier" in k:
-                client_model[k] = global_dict[k]
+                client_model.state_dict()[k].copy_(global_dict[k])
 
     for name, module in global_model.named_modules():
 
@@ -85,10 +85,10 @@ def aggregate_models_ours(global_model, client_models, args):
             base_layer_keys = name + ".base_layer.weight"
 
             lora_A_weights = torch.stack(
-                [client_model[lora_A_keys].detach() for client_model in client_models]
+                [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
             )
             lora_B_weights = torch.stack(
-                [client_model[lora_B_keys].detach() for client_model in client_models]
+                [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
             )
 
             # M shape: (d, k)
