@@ -1,0 +1,25 @@
+/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Client model 1 rank: 8
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Client model 2 rank: 4
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Client model 3 rank: 1
+Round 1/50
+/home/zzwtx/fl/fedex-lora/train_eval.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+  0%|                                                                                                           | 0/23 [00:00<?, ?it/s]/home/zzwtx/fl/fedex-lora/train_eval.py:63: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:08<00:00,  2.62it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.88it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:08<00:00,  2.87it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.93it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.94it/s]
+100%|████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.94it/s]
+  9%|███████▎                                                                         | 2/22 [00:00<00:07,  2.73it/s]

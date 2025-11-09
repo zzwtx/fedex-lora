@@ -1,0 +1,82 @@
+/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Round 1/50
+/home/zzwtx/fl/fedex-lora/train_eval.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+  0%|                                                                                                           | 0/23 [00:00<?, ?it/s]/home/zzwtx/fl/fedex-lora/train_eval.py:63: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:08<00:00,  2.64it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.91it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.91it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.95it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.95it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:07<00:00,  2.95it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:07<00:00,  2.85it/s]
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 152, in <module>
+    model = federated_learning(task)
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 125, in federated_learning
+    global_model = aggregate_models_multiranks_tmp(
+  File "/home/zzwtx/fl/fedex-lora/fed_agg.py", line 178, in aggregate_models_multiranks_tmp
+    global_model.load_state_dict(global_dict)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for PeftModelForSequenceClassification:
+	While copying the parameter named "base_model.model.roberta.encoder.layer.0.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.0.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.0.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.0.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.1.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.1.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.1.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.1.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.2.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.2.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.2.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.2.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.3.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.3.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.3.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.3.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.4.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.4.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.4.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.4.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.5.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.5.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.5.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.5.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.6.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.6.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.6.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.6.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.7.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.7.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.7.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.7.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.8.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.8.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.8.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.8.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.9.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.9.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.9.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.9.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.10.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.10.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.10.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.10.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.11.attention.self.query.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.11.attention.self.query.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.11.attention.self.value.lora_A.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>
+	While copying the parameter named "base_model.model.roberta.encoder.layer.11.attention.self.value.lora_B.default.weight", expected torch.Tensor or Tensor-like object from checkpoint but received <class 'int'>

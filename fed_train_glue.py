@@ -51,6 +51,8 @@ parser.add_argument(
 parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
 parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
+parser.add_argument("--multiranks", action="store_true", help="Multi-ranks for multiranks aggregation, lora_r, lora_r/2, lora_r/4, ...")
+
 args = parser.parse_args()
 
 wandb.init(project="project_name", config=args)
@@ -87,7 +89,13 @@ def federated_learning(task):
         if args.agg_type == "ffa":
             client_model = create_peft_FFA_model(num_labels, args)
         else:
-            client_model = create_peft_model(num_labels, args)
+            if(args.agg_type == "multiranks-tmp" and args.multiranks):
+                this_args = args
+                this_args.lora_r = max(1, args.lora_r // (2 ** i))
+                client_model = create_peft_model(num_labels, this_args)
+                print("Client model", i + 1, "rank:", client_model.peft_config['default'].r)
+            else:
+                client_model = create_peft_model(num_labels, args)
 
         client_models.append(client_model)
 
@@ -97,7 +105,12 @@ def federated_learning(task):
         client_model_state_dicts = []
         for i in range(args.num_clients):
             client_model = client_models[i]
-            client_model.load_state_dict(global_model.state_dict())
+            if(args.agg_type == "multiranks-tmp" and args.multiranks):
+                client_model.load_state_dict(
+                    trim_ranks(client_model, global_model)
+                )
+            else:
+                client_model.load_state_dict(global_model.state_dict())
             client_model_state_dict = train_client(
                 client_model, client_dataloaders[i], args
             )
@@ -109,10 +122,52 @@ def federated_learning(task):
             global_model = aggregate_models_ours(global_model, client_models, args)
         elif args.agg_type == "ffa":
             global_model = aggregate_models_ffa(global_model, client_models)
+        elif args.agg_type == "multiranks-tmp":
+            global_model = aggregate_models_multiranks_tmp(
+                global_model, client_models, args
+            )
+        elif args.agg_type == "multiranks":
+            global_model = aggregate_models_multiranks(
+                global_model, client_models, args
+            )
 
         max_metric_1, max_metric_2 = evaluate_global_model(
             global_model, val_dataloader, args, max_metric_1, max_metric_2
         )
+
+
+def trim_ranks(client_model, global_model):
+    
+    global_model = (
+        global_model.to("cuda") if torch.cuda.is_available() else global_model
+    )
+    global_dict_after_trim = global_model.state_dict()
+    
+    for name, module in global_model.named_modules():
+
+        if hasattr(module, "lora_A") and hasattr(module, "lora_B"):
+
+            global_dict_after_trim[name + ".lora_A.default.weight"] = global_dict_after_trim[name + ".lora_A.default.weight"][:client_model.peft_config['default'].r, :]
+            global_dict_after_trim[name + ".lora_B.default.weight"] = global_dict_after_trim[name + ".lora_B.default.weight"][:, :client_model.peft_config['default'].r]
+
+    return global_dict_after_trim
+
+
+def decompose_with_svd(B, A, target_rank):
+    """将矩阵通过 SVD 降秩后重新分解为两个矩阵"""
+    matrix = B @ A
+    U, S, Vt = torch.svd(matrix)
+    
+    # 保留前 target_rank 个奇异值
+    U_k = U[:, :target_rank]
+    S_k = S[:target_rank]
+    Vt_k = Vt[:target_rank, :]
+    
+    # 重新分解为 B_k @ A_k 的形式
+    B_k = U_k @ torch.diag(S_k)      # shape: (d, target_rank)
+    A_k = Vt_k                        # shape: (target_rank, hidden_dim)
+    
+    return B_k, A_k
 
 
 # Main execution

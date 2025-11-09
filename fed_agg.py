@@ -116,3 +116,136 @@ def aggregate_models_ours(global_model, client_models, args):
     global_model.load_state_dict(global_dict)
 
     return global_model
+
+
+def aggregate_models_multiranks_tmp(global_model, client_models, args):
+
+    global_model = (
+        global_model.to("cuda") if torch.cuda.is_available() else global_model
+    )
+    global_dict = global_model.state_dict()
+
+    for k in global_dict.keys():
+
+        if "classifier" in k:
+            global_dict[k] = torch.stack(
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
+            ).mean(0)
+
+    for client_model in client_models:
+
+        for k in global_dict.keys():
+
+            if "classifier" in k:
+                client_model.state_dict()[k].copy_(global_dict[k])
+
+    for name, module in global_model.named_modules():
+
+        if hasattr(module, "lora_A") and hasattr(module, "lora_B"):
+
+            lora_A_keys = name + ".lora_A.default.weight"
+            lora_B_keys = name + ".lora_B.default.weight"
+            base_layer_keys = name + ".base_layer.weight"
+
+            lora_A_weights = torch.stack(
+                [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
+            )
+            lora_B_weights = torch.stack(
+                [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
+            )
+
+            # M shape: (d, k)
+            M = sum(
+                lora_B_weights[i] @ lora_A_weights[i] for i in range(len(client_models))
+            ) / len(client_models)
+
+            lora_A_avg = lora_A_weights[0].clone().zero_()
+            lora_B_avg = lora_B_weights[0].clone().zero_()
+
+            scaling_factor = (
+                args.lora_alpha / np.sqrt(args.lora_r)
+                if args.rslora
+                else args.lora_alpha / args.lora_r
+            )
+
+            residue = M 
+
+            global_dict[name + ".lora_A.default.weight"] = lora_A_avg
+            global_dict[name + ".lora_B.default.weight"] = lora_B_avg
+            global_dict[name + ".base_layer.weight"] += torch.transpose(
+                residue * scaling_factor, 1, 0
+            )
+
+    global_model.load_state_dict(global_dict)
+
+    return global_model
+
+
+def aggregate_models_multiranks(global_model, client_models, args):
+
+    global_model = (
+        global_model.to("cuda") if torch.cuda.is_available() else global_model
+    )
+    global_dict = global_model.state_dict()
+
+    for k in global_dict.keys():
+
+        if "classifier" in k:
+            global_dict[k] = torch.stack(
+                [client_models[i].state_dict()[k].float() for i in range(len(client_models))], 0
+            ).mean(0)
+
+    for client_model in client_models:
+
+        for k in global_dict.keys():
+
+            if "classifier" in k:
+                client_model.state_dict()[k].copy_(global_dict[k])
+
+    for name, module in global_model.named_modules():
+
+        if hasattr(module, "lora_A") and hasattr(module, "lora_B"):
+
+            lora_A_keys = name + ".lora_A.default.weight"
+            lora_B_keys = name + ".lora_B.default.weight"
+            base_layer_keys = name + ".base_layer.weight"
+
+            lora_A_weights = torch.stack(
+                [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
+            )
+            lora_B_weights = torch.stack(
+                [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
+            )
+
+            # M shape: (d, k)
+            M = sum(
+                lora_B_weights[i] @ lora_A_weights[i] for i in range(len(client_models))
+            ) / len(client_models)
+
+            max_rank = max(w.shape[0] for w in lora_A_weights)
+            lora_A_avg = torch.stack([
+                torch.nn.functional.pad(w, (0, 0, 0, max_rank - w.shape[0]))
+                for w in lora_A_weights
+            ]).mean(0)
+            lora_B_avg = torch.stack([
+                torch.nn.functional.pad(w, (0, max_rank - w.shape[1], 0, 0))
+                for w in lora_B_weights
+            ]).mean(0)
+
+            scaling_factor = (
+                args.lora_alpha / np.sqrt(args.lora_r)
+                if args.rslora
+                else args.lora_alpha / args.lora_r
+            )
+
+            residue = M 
+
+            global_dict[name + ".lora_A.default.weight"] = lora_A_avg
+            global_dict[name + ".lora_B.default.weight"] = lora_B_avg
+            global_dict[name + ".base_layer.weight"] += torch.transpose(
+                residue * scaling_factor, 1, 0
+            )
+
+    global_model.load_state_dict(global_dict)
+
+    return global_model

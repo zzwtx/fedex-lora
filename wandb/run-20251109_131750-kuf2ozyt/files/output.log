@@ -1,0 +1,30 @@
+/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Round 1/50
+/home/zzwtx/fl/fedex-lora/train_eval.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+  0%|                                                                                                           | 0/23 [00:00<?, ?it/s]/home/zzwtx/fl/fedex-lora/train_eval.py:63: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+ 70%|████████████████████████████████████████████████████████████████████▏                             | 16/23 [00:06<00:02,  2.48it/s]
+Traceback (most recent call last):
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 121, in <module>
+    model = federated_learning(task)
+  File "/home/zzwtx/fl/fedex-lora/fed_train_glue.py", line 101, in federated_learning
+    client_model_state_dict = train_client(
+  File "/home/zzwtx/fl/fedex-lora/train_eval.py", line 70, in train_client
+    scaler.step(optimizer)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/torch/amp/grad_scaler.py", line 462, in step
+    retval = self._maybe_opt_step(optimizer, optimizer_state, *args, **kwargs)
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/torch/amp/grad_scaler.py", line 356, in _maybe_opt_step
+    if not sum(v.item() for v in optimizer_state["found_inf_per_device"].values()):
+  File "/home/zzwtx/fl/fedex-lora/.venv/lib/python3.10/site-packages/torch/amp/grad_scaler.py", line 356, in <genexpr>
+    if not sum(v.item() for v in optimizer_state["found_inf_per_device"].values()):
+KeyboardInterrupt
