@@ -146,13 +146,18 @@ def aggregate_models_multiranks_tmp(global_model, client_models, args):
             lora_A_keys = name + ".lora_A.default.weight"
             lora_B_keys = name + ".lora_B.default.weight"
             base_layer_keys = name + ".base_layer.weight"
+            max_rank = global_model.peft_config['default'].r
 
-            lora_A_weights = torch.stack(
-                [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
-            )
-            lora_B_weights = torch.stack(
-                [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
-            )
+            lora_A_raw = [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
+            lora_A_weights = torch.stack([
+                torch.nn.functional.pad(w, (0, 0, 0, max_rank - w.shape[0]))
+                for w in lora_A_raw
+            ])
+            lora_B_raw = [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
+            lora_B_weights = torch.stack([
+                torch.nn.functional.pad(w, (0, max_rank - w.shape[1], 0, 0))
+                for w in lora_B_raw
+            ])
 
             # M shape: (d, k)
             M = sum(
@@ -209,28 +214,26 @@ def aggregate_models_multiranks(global_model, client_models, args):
             lora_A_keys = name + ".lora_A.default.weight"
             lora_B_keys = name + ".lora_B.default.weight"
             base_layer_keys = name + ".base_layer.weight"
+            max_rank = global_model.peft_config['default'].r
 
-            lora_A_weights = torch.stack(
-                [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
-            )
-            lora_B_weights = torch.stack(
-                [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
-            )
+            lora_A_raw = [client_model.state_dict()[lora_A_keys].detach() for client_model in client_models]
+            lora_A_weights = torch.stack([
+                torch.nn.functional.pad(w, (0, 0, 0, max_rank - w.shape[0]))
+                for w in lora_A_raw
+            ])
+            lora_B_raw = [client_model.state_dict()[lora_B_keys].detach() for client_model in client_models]
+            lora_B_weights = torch.stack([
+                torch.nn.functional.pad(w, (0, max_rank - w.shape[1], 0, 0))
+                for w in lora_B_raw
+            ])
 
             # M shape: (d, k)
             M = sum(
                 lora_B_weights[i] @ lora_A_weights[i] for i in range(len(client_models))
             ) / len(client_models)
 
-            max_rank = max(w.shape[0] for w in lora_A_weights)
-            lora_A_avg = torch.stack([
-                torch.nn.functional.pad(w, (0, 0, 0, max_rank - w.shape[0]))
-                for w in lora_A_weights
-            ]).mean(0)
-            lora_B_avg = torch.stack([
-                torch.nn.functional.pad(w, (0, max_rank - w.shape[1], 0, 0))
-                for w in lora_B_weights
-            ]).mean(0)
+            lora_A_avg = lora_A_weights.mean(0)
+            lora_B_avg = lora_B_weights.mean(0)
 
             scaling_factor = (
                 args.lora_alpha / np.sqrt(args.lora_r)
@@ -238,7 +241,7 @@ def aggregate_models_multiranks(global_model, client_models, args):
                 else args.lora_alpha / args.lora_r
             )
 
-            residue = M 
+            residue = M - lora_B_avg @ lora_A_avg
 
             global_dict[name + ".lora_A.default.weight"] = lora_A_avg
             global_dict[name + ".lora_B.default.weight"] = lora_B_avg

@@ -1,0 +1,54 @@
+{
+  "os":  "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python":  "CPython 3.10.19",
+  "startedAt":  "2025-11-09T14:02:55.482319Z",
+  "args":  [
+    "--model=roberta-base",
+    "--task=cola",
+    "--agg_type=multiranks-tmp",
+    "--num_clients=3",
+    "--lora_r=8",
+    "--rounds",
+    "50",
+    "--lr",
+    "1e-3",
+    "--local_epochs",
+    "3",
+    "--seed",
+    "42",
+    "--multiranks"
+  ],
+  "program":  "/home/zzwtx/fl/fedex-lora/fed_train_glue.py",
+  "codePath":  "fed_train_glue.py",
+  "codePathLocal":  "fed_train_glue.py",
+  "git":  {
+    "commit":  "1c0bcea07021ed1d1630e5f5a42f8f972b6279ef"
+  },
+  "email":  "zzwtx1@gmail.com",
+  "root":  "/home/zzwtx/fl/fedex-lora",
+  "host":  "DESKTOP-TPQCNFJ",
+  "executable":  "/home/zzwtx/fl/fedex-lora/.venv/bin/python3",
+  "cpu_count":  8,
+  "cpu_count_logical":  16,
+  "gpu":  "NVIDIA GeForce RTX 5060 Ti",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "1081101176832",
+      "used":  "104484225024"
+    }
+  },
+  "memory":  {
+    "total":  "16710299648"
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA GeForce RTX 5060 Ti",
+      "memoryTotal":  "17103323136",
+      "architecture":  "Blackwell",
+      "uuid":  "GPU-d1933768-e761-511f-950b-22eefbcddf12"
+    }
+  ],
+  "cudaVersion":  "13.0",
+  "writerId":  "8t4f4tpeng68d7ckds75l8u4w8bttjyx"
+}

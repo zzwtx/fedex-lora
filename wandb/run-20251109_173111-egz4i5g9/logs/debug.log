@@ -19,3 +19,5 @@ config: {'task': 'cola', 'model': 'roberta-base', 'lora_r': 8, 'lora_alpha': 8, 
 2025-11-09 17:31:12,681 INFO    MainThread:29553 [wandb_run.py:_redirect():2423] Wrapping output streams.
 2025-11-09 17:31:12,681 INFO    MainThread:29553 [wandb_run.py:_redirect():2446] Redirects installed.
 2025-11-09 17:31:12,683 INFO    MainThread:29553 [wandb_init.py:init():1073] run started, returning control to user process
+2025-11-09 17:32:42,676 INFO    wandb-AsyncioManager-main:29553 [service_client.py:_forward_responses():80] Reached EOF.
+2025-11-09 17:32:42,676 INFO    wandb-AsyncioManager-main:29553 [mailbox.py:close():137] Closing mailbox, abandoning 1 handles.

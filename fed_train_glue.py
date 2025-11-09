@@ -89,8 +89,8 @@ def federated_learning(task):
         if args.agg_type == "ffa":
             client_model = create_peft_FFA_model(num_labels, args)
         else:
-            if(args.agg_type == "multiranks-tmp" and args.multiranks):
-                this_args = args
+            if((args.agg_type == "multiranks-tmp" or args.agg_type == "multiranks") and args.multiranks):
+                this_args = deepcopy(args)
                 this_args.lora_r = max(1, args.lora_r // (2 ** i))
                 client_model = create_peft_model(num_labels, this_args)
                 print("Client model", i + 1, "rank:", client_model.peft_config['default'].r)
@@ -108,6 +108,10 @@ def federated_learning(task):
             if(args.agg_type == "multiranks-tmp" and args.multiranks):
                 client_model.load_state_dict(
                     trim_ranks(client_model, global_model)
+                )
+            elif(args.agg_type == "multiranks" and args.multiranks):
+                client_model.load_state_dict(
+                    lower_rank(client_model, global_model, args)
                 )
             else:
                 client_model.load_state_dict(global_model.state_dict())
@@ -141,7 +145,7 @@ def trim_ranks(client_model, global_model):
     global_model = (
         global_model.to("cuda") if torch.cuda.is_available() else global_model
     )
-    global_dict_after_trim = global_model.state_dict()
+    global_dict_after_trim = {k: v.clone() for k, v in global_model.state_dict().items()}
     
     for name, module in global_model.named_modules():
 
@@ -153,19 +157,83 @@ def trim_ranks(client_model, global_model):
     return global_dict_after_trim
 
 
+def lower_rank(client_model, global_model, args):
+    
+    global_model = (
+        global_model.to("cuda") if torch.cuda.is_available() else global_model
+    )
+    global_dict_after_lower = {k: v.clone() for k, v in global_model.state_dict().items()}
+    
+    for name, module in global_model.named_modules():
+
+        if hasattr(module, "lora_A") and hasattr(module, "lora_B"):
+
+            lora_A = global_dict_after_lower[name + ".lora_A.default.weight"]
+            lora_B = global_dict_after_lower[name + ".lora_B.default.weight"]
+
+            B_k, A_k = decompose_with_svd(lora_B, lora_A, client_model.peft_config['default'].r)
+
+            residue = lora_B @ lora_A - B_k @ A_k
+
+            global_dict_after_lower[name + ".lora_A.default.weight"] = A_k
+            global_dict_after_lower[name + ".lora_B.default.weight"] = B_k
+            
+            scaling_factor = (
+                args.lora_alpha / np.sqrt(args.lora_r)
+                if args.rslora
+                else args.lora_alpha / args.lora_r
+            )
+            
+            global_dict_after_lower[name + ".base_layer.weight"] += torch.transpose(
+                residue * scaling_factor, 1, 0
+            )
+
+    return global_dict_after_lower
+
+
 def decompose_with_svd(B, A, target_rank):
     """将矩阵通过 SVD 降秩后重新分解为两个矩阵"""
     matrix = B @ A
-    U, S, Vt = torch.svd(matrix)
+    
+    # # 监视原始矩阵
+    # print(f"\n[SVD Decomposition] Original matrix B@A:")
+    # print(f"  Shape: {matrix.shape}")
+    # print(f"  Frobenius norm: {torch.norm(matrix, 'fro'):.6f}")
+    # print(f"  Min: {matrix.min():.6f}, Max: {matrix.max():.6f}")
+    
+    # 使用 torch.linalg.svd 替代弃用的 torch.svd
+    U, S, Vh = torch.linalg.svd(matrix, full_matrices=False)
+    
+    # # 监视奇异值
+    # print(f"\n[SVD Decomposition] Singular values:")
+    # print(f"  Top 10 singular values: {S[:10]}")
+    # print(f"  Target rank: {target_rank}")
+    # print(f"  Sum of all singular values: {S.sum():.6f}")
+    # print(f"  Sum of top {target_rank} singular values: {S[:target_rank].sum():.6f}")
+    # print(f"  Ratio: {(S[:target_rank].sum() / S.sum()).item():.4f}")
     
     # 保留前 target_rank 个奇异值
     U_k = U[:, :target_rank]
     S_k = S[:target_rank]
-    Vt_k = Vt[:target_rank, :]
+    Vh_k = Vh[:target_rank, :]
     
     # 重新分解为 B_k @ A_k 的形式
     B_k = U_k @ torch.diag(S_k)      # shape: (d, target_rank)
-    A_k = Vt_k                        # shape: (target_rank, hidden_dim)
+    A_k = Vh_k                        # shape: (target_rank, hidden_dim)
+    
+    # # 监视降秩后的矩阵
+    # matrix_k = B_k @ A_k
+    # print(f"\n[SVD Decomposition] Reconstructed matrix B_k@A_k:")
+    # print(f"  Shape: {matrix_k.shape}")
+    # print(f"  Frobenius norm: {torch.norm(matrix_k, 'fro'):.6f}")
+    # print(f"  Min: {matrix_k.min():.6f}, Max: {matrix_k.max():.6f}")
+    
+    # # 计算重构误差
+    # reconstruction_error = torch.norm(matrix - matrix_k, 'fro')
+    # relative_error = reconstruction_error / torch.norm(matrix, 'fro')
+    # print(f"\n[SVD Decomposition] Reconstruction error:")
+    # print(f"  Frobenius norm of residual: {reconstruction_error:.6f}")
+    # print(f"  Relative error: {relative_error.item():.6f} (should be < 1.0)")
     
     return B_k, A_k
 

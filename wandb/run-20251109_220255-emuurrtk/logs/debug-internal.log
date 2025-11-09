@@ -1,0 +1,11 @@
+{"time":"2025-11-09T22:02:55.701206882+08:00","level":"INFO","msg":"stream: starting","core version":"0.22.3"}
+{"time":"2025-11-09T22:02:56.260135991+08:00","level":"INFO","msg":"stream: created new stream","id":"emuurrtk"}
+{"time":"2025-11-09T22:02:56.260267404+08:00","level":"INFO","msg":"handler: started","stream_id":"emuurrtk"}
+{"time":"2025-11-09T22:02:56.260445257+08:00","level":"INFO","msg":"stream: started","id":"emuurrtk"}
+{"time":"2025-11-09T22:02:56.260448272+08:00","level":"INFO","msg":"writer: started","stream_id":"emuurrtk"}
+{"time":"2025-11-09T22:02:56.260469892+08:00","level":"INFO","msg":"sender: started","stream_id":"emuurrtk"}
+{"time":"2025-11-09T23:04:40.450895535+08:00","level":"INFO","msg":"stream: closing","id":"emuurrtk"}
+{"time":"2025-11-09T23:04:46.864866008+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-09T23:04:47.302128857+08:00","level":"INFO","msg":"handler: closed","stream_id":"emuurrtk"}
+{"time":"2025-11-09T23:04:47.302297195+08:00","level":"INFO","msg":"sender: closed","stream_id":"emuurrtk"}
+{"time":"2025-11-09T23:04:47.302316034+08:00","level":"INFO","msg":"stream: closed","id":"emuurrtk"}
